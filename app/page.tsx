@@ -93,7 +93,7 @@ const Dashboard = () => {
             <button onClick={() => Router.push('/tasks')} className="text-blue-500 hover:underline">View All</button>
           </div>
           {
-            data.length !== 0 ?
+            latestTasks.length !== 0 ?
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-gray-200 text-left">
@@ -109,7 +109,7 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                   {
-                    data && latestTasks?.map((item: any, index: number) => {
+                    latestTasks && latestTasks?.map((item: any, index: number) => {
                       return (
                         <tr key={index} className="border-t">
                           <td className="p-2">{item?.title || "-"}</td>
@@ -144,7 +144,7 @@ const Dashboard = () => {
               <button onClick={() => Router.push('/users')} className="text-blue-500 hover:underline">View All</button>
             </div>
             {
-              data.length !== 0 ?
+              latestUsers.length !== 0 ?
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="bg-gray-200 text-left">
@@ -157,7 +157,7 @@ const Dashboard = () => {
                   </thead>
                   <tbody>
                     {
-                      data && latestUsers?.map((item: any, index: number) => {
+                      latestUsers && latestUsers?.map((item: any, index: number) => {
                         return (
                           <tr key={index} className="border-t">
                             <td className="p-2">{index + 1 || "-"}</td>
