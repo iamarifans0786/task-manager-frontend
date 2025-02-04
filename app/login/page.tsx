@@ -55,7 +55,7 @@ export default function LoginPage() {
                     </form>
                 </FormProvider>
                 <p className="flex items-center justify-center gap-1 mt-4 text-center text-base text-white">
-                    Don't have an account?
+                    {`  Don't have an account?`}
                     <a href="/register" className="font-semibold hover:underline text-primary">
                         Register here
                     </a>
