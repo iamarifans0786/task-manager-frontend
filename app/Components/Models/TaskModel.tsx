@@ -59,6 +59,7 @@ export default function TaskModal({ id, isOpen, setIsOpen }: { id?: string; isOp
 
     const onSubmit = async (data: any) => {
         console.log(data)
+        setIsLoader(true)
         if (id) {
             await apiClient.put(`/task/`, data, {
                 params: { id }
