@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Button Styles */
+.btn {
+    @apply w-full flex justify-center items-center text-white font-medium rounded-lg text-base px-5 py-2.5 transition-all duration-300;
+}
+
+.btn-primary {
+    @apply bg-primary hover:bg-primary-dark focus:ring-4 focus:ring-primary-light focus:outline-none;
+}
+
+/* Input Styles */
+.input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5;
+}
+
+/* Error Message */
+.error {
+    @apply text-red-500 text-sm mt-1;
+}
