@@ -55,7 +55,7 @@ const TaskPage = () => {
         }).then(() => {
             showSuccessMessage('Task deleted.')
         }).catch((error) => {
-            showErrorMessage(error?.response?.data?.message)
+            showErrorMessage(error?.response?.data?.error)
             console.log(error)
         }).finally(() => {
             fetchTasks()

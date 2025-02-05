@@ -4,16 +4,19 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../Context/AuthContext";
 import { showErrorMessage, showSuccessMessage, useApiClient } from "../Helper/utils";
 import FullScreenLoader from "../Components/Common/Loader";
-import { DeleteIcon } from "../Helper/SvgProvider";
+import { DeleteIcon, EditIcon } from "../Helper/SvgProvider";
+import AddUserModel from "../Components/Models/AddUserModel";
 
 const UsersPage = () => {
     const Router = useRouter()
     const [data, setData] = useState([])
     const { user } = useAuth()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
     const apiClient = useApiClient()
     const [isLoader, setIsLoader] = useState(false)
 
-    const GetTask = async () => {
+    const GetUser = async () => {
         setIsLoader(true)
         await apiClient.get('/auth/all-users')
             .then((res) => {
@@ -25,12 +28,12 @@ const UsersPage = () => {
             })
     }
     useEffect(() => {
-        user && GetTask();
+        user && GetUser();
     }, [user])
 
-    const handleDeleteTask = async (id: string) => {
-        if (!window.confirm("Are you sure you want to delete this task?")) return
-        await apiClient.delete(`/task/`, {
+    const handleDeleteUser = async (id: string) => {
+        if (!window.confirm("Are you sure you want to delete this user?")) return
+        await apiClient.delete(`/auth/`, {
             params: { id }
         }).then(() => {
             showSuccessMessage('User deleted.')
@@ -38,8 +41,13 @@ const UsersPage = () => {
             showErrorMessage(error?.response?.data?.message)
             console.log(error)
         }).finally(() => {
-            GetTask();
+            GetUser();
         })
+    };
+
+    const handleEditUser = (id: string) => {
+        setSelectedUserId(id);
+        setIsModalOpen(true);
     };
 
     const latestUsers = [...data].reverse().filter((item: any) => item?.type !== 'admin')
@@ -47,9 +55,28 @@ const UsersPage = () => {
     return (
         <div className="w-full h-full">
             {isLoader && <FullScreenLoader />}
+
+            {isModalOpen && (
+                <AddUserModel
+                    id={selectedUserId as string}
+                    isOpen={isModalOpen}
+                    setIsOpen={(state: boolean) => {
+                        setIsModalOpen(state);
+                        if (!state) setSelectedUserId(null);
+                        GetUser();
+                    }}
+                />
+            )}
+
             {/* Recent Users Table */}
-            <div className="w-full bg-white flex items-start text-lg font-bold p-4 rounded-md">
-                {`All Users`}
+            <div className="w-full flex justify-between bg-white p-4 rounded-md">
+                <h2 className="text-lg font-bold">All Tasks</h2>
+                {user?.type === 'admin' && <button
+                    onClick={() => { setIsModalOpen(true); setSelectedUserId(null); }}
+                    className="btn btn-primary max-w-[140px]"
+                >
+                    Add User
+                </button>}
             </div>
             <div className="mt-6 bg-white shadow-md rounded-lg p-4 overflow-x-auto">
                 {
@@ -78,8 +105,11 @@ const UsersPage = () => {
                                                     {item?.createdAt ? new Date(item?.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", }) : "-"}
                                                 </td>
                                                 {user?.type === 'admin' && <td className="p-2 flex gap-3">
-                                                    <span onClick={() => handleDeleteTask(item._id)} className="cursor-pointer">
+                                                    <span onClick={() => handleDeleteUser(item._id)} className="cursor-pointer">
                                                         <DeleteIcon />
+                                                    </span>
+                                                    <span onClick={() => handleEditUser(item._id)} className="cursor-pointer">
+                                                        <EditIcon />
                                                     </span>
                                                 </td>}
                                             </tr>
