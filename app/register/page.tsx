@@ -55,7 +55,7 @@ export default function Home() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-background px-6">
-            <div className="w-full max-w-xl p-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <div className="w-full max-w-xl p-8 rounded-lg shadow-md bg-gray-800">
                 <h2 className="text-3xl font-bold text-center text-white">Registeration</h2>
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-6 space-y-4">
